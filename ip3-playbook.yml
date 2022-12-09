@@ -1,0 +1,18 @@
+---
+- name: Main IP playbook tasks
+  hosts: all
+  vars:
+    mydir: "/home/vmadmin/yolo/"
+
+  tasks:
+  - name: Create a directory if it does not exist
+    ansible.builtin.file:
+      path: "/home/vmadmin/yolo/"
+      state: directory
+      mode: '0755'
+  - name: Clone a github repository
+    git:
+      repo: https://github.com/digitaltangent/yolo.git
+      dest: /home/vmadmin/yolo/
+      clone: yes
+      update: yes    

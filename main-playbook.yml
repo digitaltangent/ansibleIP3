@@ -1,6 +1,8 @@
 ---
 - name: Create Multipass VMs for a IP3 cluster
-  hosts: localhost
+  hosts: all
+  vars:
+    mydir: "/home/vmadmin/yolo/"
 
   tasks:
   - name: Read IP3 cluster node VM configuration from file
@@ -15,3 +17,9 @@
       vmname: "{{ item.key }}"
       vmcreationparams: "{{ item.value }}"
     loop: "{{ ip3nodes | dict2items }}"
+  - name: Create a directory if it does not exist
+    ansible.builtin.file:
+      path: "/home/vmadmin/yolo/"
+      state: directory
+      mode: '0755'  
+  
