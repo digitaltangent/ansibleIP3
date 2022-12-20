@@ -1,0 +1,19 @@
+---
+# tasks file for backend
+- name: Create a backend data container
+  docker_container:
+    name: backend
+    image: aleedaf/yolo:backend-1.1.0
+    tty: true
+    volumes_from:
+      - "mongo_data"
+    state: started
+    ports: 3001:3001
+    env:
+      MONGODB_URI: "mongodb://mongo_data"
+- name: Add backend to the network
+  docker_network:
+    name: yolo-network
+    connected:
+      - backend
+    appends: true

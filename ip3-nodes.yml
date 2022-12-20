@@ -1,1 +1,1 @@
-ip3-master: "--mem 3G --disk 5G 22.04"
+ip3-master: "--mem 4G --disk 5G 22.04"

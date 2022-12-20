@@ -1,0 +1,24 @@
+---
+# tasks file for mongo
+
+- name: Create data volume for MongoDB
+  docker_volume:
+    name: mongo_data
+    state: present
+- name: Start MongoDB data container
+  docker_container:
+    name: mongo_data
+    image: mongo:latest
+    volumes:
+      - mongo_data:/data/db
+    state: started
+    command: mongod
+    detach: true
+    restart_policy: always
+    ports: 27017:27017
+- name: Add mongo_data to the network
+  docker_network:
+    name: yolo-network
+    connected:
+      - mongo_data
+    appends: true          

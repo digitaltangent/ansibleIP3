@@ -21,24 +21,25 @@
         - python3-pip
         - virtualenv
         - python3-setuptools
+        - docker
+        - nodejs
+        - npm
+        - node-typescript
       state: latest
       update_cache: true
   - name: Add Docker GPG apt Key
     apt_key:
       url: https://download.docker.com/linux/ubuntu/gpg
       state: present
-
   - name: Add Docker Repository
     apt_repository:
       repo: deb https://download.docker.com/linux/ubuntu focal stable
       state: present
-
   - name: Update apt and install docker-ce
     apt:
       name: docker-ce
       state: latest
       update_cache: true
-
   - name: Install Docker Module for Python
     pip:
       name: docker         
@@ -47,9 +48,25 @@
       path: "{{ mydir }}"
       state: directory
       mode: '0755'
-  - name: Clone a github repository
+  - name: Clone the yolo github repository done in IP2
     git:
       repo: https://github.com/digitaltangent/yolo.git
       dest: "{{ mydir }}"
       clone: yes
-      update: yes    
+      update: yes
+      force: yes
+      version: dockercompose
+  - name: Create a network
+    community.docker.docker_network:
+      name: yolo-network  
+  - name: Run mongo docker container
+    include_role:
+      name: mongo
+  - name: Run client docker container
+    include_role:
+      name: client 
+  - name: Run backend docker container
+    include_role:
+      name: backend             
+  
+             

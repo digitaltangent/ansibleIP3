@@ -1,0 +1,35 @@
+---
+# tasks file for client
+- name: Create a client data container
+  docker_container:
+    name: client
+    image: aleedaf/yolo:client-1.1.0
+    tty: true
+    volumes_from:
+      - "mongo_data"
+    state: started
+    ports: 3000:3000
+- name: Add client to the network
+  docker_network:
+    name: yolo-network
+    connected:
+      - client
+    appends: true    
+    
+#- name: Install packages based on package.json.
+ # npm:
+  #  path: /home/vmadmin/yolo/client
+
+#- name: Install forever (to run Node.js app).
+ # npm: name=forever global=yes state=present       
+
+#- name: Check list of running Node apps.
+#  command: forever list
+#  register: forever_list
+#  changed_when: false
+
+#- name: Start Node app.
+#  command: "forever start /home/vmadmin/yolo/client/src/index.js"
+#  when: "forever_list.stdout.find('/home/vmadmin/yolo/client/src/index.js') == -1"      
+
+           
